@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>理財專業查詢工具 - 終極整合版</title>
+    <title>理財專業查詢工具 - 終極修復版</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -24,12 +24,10 @@
         }
         .container { max-width: 650px; }
         
-        /* 頁籤導覽樣式 */
         .nav-tabs { border-bottom: 3px solid var(--primary-blue); background: white; }
         .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; }
         .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
         
-        /* 內容區塊 */
         .tab-content { background: white; padding: 20px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .section-header { 
             background: var(--accent-blue); 
@@ -44,27 +42,20 @@
             align-items: center;
         }
         
-        /* 選單盒樣式 */
         .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
-        .form-check { margin-bottom: 6px; }
         
-        /* 表格專業排版 */
         .table-custom { width: 100%; border-collapse: collapse; background: white; table-layout: fixed; }
         .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; font-weight: 500; font-size: 0.95rem; text-align: left; }
         .table-custom tbody td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; word-wrap: break-word; }
         
-        .fund-sub-info { font-size: 0.75rem; color: #6c757d; margin-top: 3px; }
+        .fund-sub-info { font-size: 0.75rem; color: #6c757d; margin-top: 3px; line-height: 1.2; }
         .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.1rem; }
         
-        /* 按鈕設計 */
         .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; }
         .btn-pin-cfg { font-size: 0.8rem; padding: 2px 8px; border-radius: 5px; background: white; color: var(--primary-blue); border: 1px solid var(--primary-blue); }
 
-        /* 釘選介面 */
         #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-        /* 截圖說明文字 */
-        .screenshot-footer { font-size: 0.7rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; }
+        .screenshot-footer { font-size: 0.7rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -155,12 +146,7 @@
                     <h6 class="text-center fw-bold py-2 mb-3" style="color: white; background: var(--primary-blue); border-radius: 5px;">稅務處理概覽表</h6>
                     <table class="table-custom">
                         <thead>
-                            <tr>
-                                <th style="width:25%">工具類型</th>
-                                <th style="width:20%">自然人</th>
-                                <th style="width:25%">法人</th>
-                                <th style="width:30%">備註</th>
-                            </tr>
+                            <tr><th style="width:25%">工具類型</th><th style="width:20%">自然人</th><th style="width:25%">法人</th><th style="width:30%">備註</th></tr>
                         </thead>
                         <tbody id="bodyTax"></tbody>
                     </table>
@@ -176,11 +162,12 @@
 <script>
     let dataOn = [], dataOff = [], dataTax = [], allBanks = [];
 
-    // --- CSV 載入 ---
+    // --- CSV 載入模組 (加強標頭清理) ---
     function loadCSV(file, callback) {
         Papa.parse(file, {
             download: true, header: true, skipEmptyLines: true,
-            transformHeader: h => h.trim(),
+            // 移除 BOM 並清理標頭空白
+            transformHeader: h => h.trim().replace(/\uFEFF/g, ''),
             transform: v => v.trim(),
             complete: res => callback(res)
         });
@@ -241,7 +228,7 @@
         el.value = current;
     }
 
-    // --- 境內基金邏輯 ---
+    // --- 境內基金邏輯 (防 undefined 修復) ---
     document.getElementById('bankOn').onchange = renderOn;
     document.querySelectorAll('.on-filter').forEach(el => el.onchange = renderOn);
 
@@ -250,7 +237,6 @@
         
         let filtered = dataOn.filter(row => {
             const code = String(row[bank] || "").trim();
-            // 排除 ● 與 X 且不顯示空白
             if (code === '' || code === 'X' || code === '●') return false;
 
             const name = row['主要基金'] || "";
@@ -279,7 +265,6 @@
             if (fAUD && currency.includes("澳幣")) isMatch = true;
             if (fZAR && currency.includes("南非幣")) isMatch = true;
             if (fJPY && currency.includes("日幣")) isMatch = true;
-
             return isMatch;
         });
 
@@ -300,10 +285,26 @@
         let final = (document.getElementById('on_all').checked || checked.length === 0) ? data : data.filter(r => checked.includes(r['主要基金']));
         
         document.getElementById('areaOn').style.display = final.length ? 'block' : 'none';
-        document.getElementById('titleOn').innerText = bank + " 銷售代碼";
-        const body = document.getElementById('bodyOn'); body.innerHTML = '';
+        document.getElementById('titleOn').innerText = (bank || "銷售機構") + " 銷售代碼";
+        
+        const body = document.getElementById('bodyOn'); 
+        body.innerHTML = '';
         final.forEach(r => {
-            body.innerHTML += `<tr><td><div class="fw-bold">${r['主要基金']}</div><div class="fund-sub-info">${r['幣別']} | ${r['級別']} | ${r['配息']}</div></td><td class="text-center code-highlight">${r[bank]}</td></tr>`;
+            // 使用 || '' 防止出現 undefined
+            const fundName = r['主要基金'] || '未命名基金';
+            const currency = r['幣別'] || '';
+            const level = r['級別'] || '';
+            const divType = r['配息'] || '';
+            const codeValue = r[bank] || '';
+
+            body.innerHTML += `
+                <tr>
+                    <td>
+                        <div class="fw-bold">${fundName}</div>
+                        <div class="fund-sub-info">${currency} | ${level} | ${divType}</div>
+                    </td>
+                    <td class="text-center code-highlight">${codeValue}</td>
+                </tr>`;
         });
     }
 
@@ -348,9 +349,9 @@
         const checked = Array.from(document.querySelectorAll('.chk-off:checked')).map(c => c.value);
         let final = (document.getElementById('off_all').checked || checked.length === 0) ? data : data.filter(r => checked.includes(r['主要基金']));
         document.getElementById('areaOff').style.display = final.length ? 'block' : 'none';
-        document.getElementById('titleOff').innerText = bank + " 銷售代碼";
+        document.getElementById('titleOff').innerText = (bank || "銷售機構") + " 銷售代碼";
         const body = document.getElementById('bodyOff'); body.innerHTML = '';
-        final.forEach(r => body.innerHTML += `<tr><td class="fw-bold">${r['主要基金']}</td><td class="text-center code-highlight">${r[bank]}</td></tr>`);
+        final.forEach(r => body.innerHTML += `<tr><td class="fw-bold">${r['主要基金']}</td><td class="text-center code-highlight">${r[bank] || ''}</td></tr>`);
     }
 
     // --- 稅務分析 ---
@@ -372,7 +373,7 @@
         final.forEach(r => body.innerHTML += `<tr><td class="fw-bold text-primary">${r['投資工具類型']}</td><td>${r['自然人']||''}</td><td>${r['法人']||''}</td><td>${r['備註']||''}</td></tr>`);
     }
 
-    // --- 通用截圖 ---
+    // --- 通用截圖模組 ---
     async function takeScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
