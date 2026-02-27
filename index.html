@@ -24,7 +24,7 @@
         }
         .container { max-width: 850px; width: 95%; margin: auto; }
         
-        /* 網頁端響應式字體設定 */
+        /* 網頁端響應式預覽字體 */
         .fund-name { font-size: 1rem; font-weight: bold; }
         .fund-sub-info { font-size: 0.85rem; color: #6c757d; margin-top: 3px; }
         .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.15rem; }
@@ -32,25 +32,25 @@
 
         @media (max-width: 576px) {
             .fund-name { font-size: 0.95rem; }
-            .code-highlight { font-size: 1rem; }
+            .code-highlight { font-size: 1.05rem; }
         }
 
-        /* 📸 截圖專用樣式 (當 class 包含 screenshot-mode 時) */
+        /* 📸 截圖專用巨大化樣式 (強制分離樣式) */
         .screenshot-mode h6.title-label { font-size: 30px !important; padding: 15px !important; }
         .screenshot-mode .fund-name { font-size: 30px !important; line-height: 1.3 !important; }
         .screenshot-mode .fund-sub-info { font-size: 1.8rem !important; line-height: 1.4 !important; }
         .screenshot-mode .code-highlight { font-size: 2.2rem !important; }
         .screenshot-mode .screenshot-footer { font-size: 1.1rem !important; padding-top: 15px !important; }
-        .screenshot-mode .code-col { width: 220px !important; }
+        .screenshot-mode .code-col { width: 230px !important; }
         .screenshot-mode table th { font-size: 20px !important; }
 
-        /* 通用表格設定 */
+        /* 表格與 UI 設定 */
         .table-custom { width: 100%; border-collapse: collapse; background: white; }
         .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; white-space: nowrap; }
         .table-custom tbody td { padding: 12px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        .code-col { text-align: center; white-space: nowrap; width: 120px; }
+        .code-col { text-align: center; white-space: nowrap; width: 125px; }
         
-        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; cursor: pointer; }
+        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; cursor: pointer; transition: 0.3s; }
         .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .section-header { background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary-blue); display: flex; justify-content: space-between; align-items: center; }
@@ -74,20 +74,15 @@
     </div>
 
     <ul class="nav nav-tabs nav-fill" id="queryTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="on-tab" data-bs-toggle="tab" data-bs-target="#on-pane" type="button" role="tab">境內基金</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="gsam-tab" data-bs-toggle="tab" data-bs-target="#gsam-pane" type="button" role="tab">GSAM</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="sicav-tab" data-bs-toggle="tab" data-bs-target="#sicav-pane" type="button" role="tab">GSAM(SICAV)</button>
-        </li>
+        <li class="nav-item"><button class="nav-link active" id="on-tab" data-bs-toggle="tab" data-bs-target="#on-pane" type="button">境內基金</button></li>
+        <li class="nav-item"><button class="nav-link" id="gsam-tab" data-bs-toggle="tab" data-bs-target="#gsam-pane" type="button">GSAM</button></li>
+        <li class="nav-item"><button class="nav-link" id="sicav-tab" data-bs-toggle="tab" data-bs-target="#sicav-pane" type="button">GSAM(SICAV)</button></li>
+        <li class="nav-item"><button class="nav-link" id="ninetyone-tab" data-bs-toggle="tab" data-bs-target="#ninetyone-pane" type="button">晉達</button></li>
     </ul>
 
     <div class="tab-content" id="queryTabContent">
-        <div class="tab-pane fade show active" id="on-pane" role="tabpanel" aria-labelledby="on-tab">
-            <div class="section-header"><span>境內基金下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
+        <div class="tab-pane fade show active" id="on-pane" role="tabpanel">
+            <div class="section-header"><span>境內基金查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
             <select id="bankOn" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onTISA"><label class="form-check-label">TISA</label></div></div>
@@ -100,19 +95,19 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onZAR"><label class="form-check-label">南非幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onJPY"><label class="form-check-label">日幣</label></div></div>
             </div>
-            <div id="listOn" class="list-container">載入資料中...</div>
+            <div id="listOn" class="list-container">載入中...</div>
             <div id="areaOn" style="display:none;">
                 <div id="captureOn" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
-                    <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodyOn"></tbody></table>
-                    <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
+                    <table class="table-custom"><thead><tr><th>基金明細</th><th class="code-col">代號</th></tr></thead><tbody id="bodyOn"></tbody></table>
+                    <div class="screenshot-footer">下單代號有◎即表示為「目前不接受新申購」，V即表示為「已上架」基金但無代號</div>
                 </div>
                 <button class="btn btn-shot" onclick="handleScreenshot('captureOn', '境內基金', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
 
-        <div class="tab-pane fade" id="gsam-pane" role="tabpanel" aria-labelledby="gsam-tab">
-            <div class="section-header"><span>GSAM下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
+        <div class="tab-pane fade" id="gsam-pane" role="tabpanel">
+            <div class="section-header"><span>GSAM查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
             <select id="bankGsam" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamPre"><label class="form-check-label">前收</label></div></div>
@@ -127,19 +122,19 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamAUDH"><label class="form-check-label">對沖澳幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamZARH"><label class="form-check-label">對沖南非幣</label></div></div>
             </div>
-            <div id="listGsam" class="list-container">載入資料中...</div>
+            <div id="listGsam" class="list-container">載入中...</div>
             <div id="areaGsam" style="display:none;">
                 <div id="captureGsam" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
-                    <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodyGsam"></tbody></table>
-                    <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
+                    <table class="table-custom"><thead><tr><th>基金明細</th><th class="code-col">代號</th></tr></thead><tbody id="bodyGsam"></tbody></table>
+                    <div class="screenshot-footer">下單代號有◎即表示為「目前不接受新申購」，V即表示為「已上架」基金但無代號</div>
                 </div>
                 <button class="btn btn-shot" onclick="handleScreenshot('captureGsam', 'GSAM查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
 
-        <div class="tab-pane fade" id="sicav-pane" role="tabpanel" aria-labelledby="sicav-tab">
-            <div class="section-header"><span>GSAM(SICAV)下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
+        <div class="tab-pane fade" id="sicav-pane" role="tabpanel">
+            <div class="section-header"><span>GSAM(SICAV)查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
             <select id="bankSicav" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavPre"><label class="form-check-label">前收</label></div></div>
@@ -150,88 +145,108 @@
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavJPYH"><label class="form-check-label">日圓避險</label></div></div>
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavAUDH"><label class="form-check-label">澳幣避險</label></div></div>
             </div>
-            <div id="listSicav" class="list-container">載入資料中...</div>
+            <div id="listSicav" class="list-container">載入中...</div>
             <div id="areaSicav" style="display:none;">
                 <div id="captureSicav" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleSicav" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
-                    <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodySicav"></tbody></table>
-                    <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
+                    <table class="table-custom"><thead><tr><th>基金明細</th><th class="code-col">代號</th></tr></thead><tbody id="bodySicav"></tbody></table>
+                    <div class="screenshot-footer">下單代號有◎即表示為「目前不接受新申購」，V即表示為「已上架」基金但無代號</div>
                 </div>
                 <button class="btn btn-shot" onclick="handleScreenshot('captureSicav', 'SICAV查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="ninetyone-pane" role="tabpanel">
+            <div class="section-header"><span>晉達下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
+            <select id="bankNinetyone" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
+            <div class="row g-1 mb-3">
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyonePre"><label class="form-check-label">前收</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneAcc"><label class="form-check-label">累積</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneDiv"><label class="form-check-label">配息</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneUSD"><label class="form-check-label">美元</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneGBP"><label class="form-check-label">英鎊</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneEUR"><label class="form-check-label">歐元</label></div></div>
+                <div class="col-4"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneUSDH"><label class="form-check-label">美元避險</label></div></div>
+                <div class="col-4"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneAUDH"><label class="form-check-label">澳幣避險IRD</label></div></div>
+                <div class="col-4"><div class="form-check"><input class="form-check-input ninetyone-filter" type="checkbox" id="ninetyoneZARH"><label class="form-check-label">南非幣避險IRD</label></div></div>
+            </div>
+            <div id="listNinetyone" class="list-container">載入中...</div>
+            <div id="areaNinetyone" style="display:none;">
+                <div id="captureNinetyone" style="background: white; padding: 15px;">
+                    <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleNinetyone" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                    <table class="table-custom"><thead><tr><th>基金明細</th><th class="code-col">代號</th></tr></thead><tbody id="bodyNinetyone"></tbody></table>
+                    <div class="screenshot-footer">下單代號有◎即表示為「目前不接受新申購」，V即表示為「已上架」基金但無代號</div>
+                </div>
+                <button class="btn btn-shot" onclick="handleScreenshot('captureNinetyone', '晉達查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-    let dataOn = [], dataGsam = [], dataSicav = [], allBanks = [];
+    let datasets = { On: [], Gsam: [], Sicav: [], Ninetyone: [] };
+    let allBanks = [];
 
-    // --- 智慧標籤偵測：自動處理不同的 CSV 標頭 ---
-    function getSmartRow(row) {
+    // --- 工具：智慧標籤偵測 ---
+    function getSmartInfo(row) {
         return {
             name: row['基金名稱'] || row['主要基金'] || "未知基金",
-            type: row['類型'] || row['級別'] || row['配息'] || "",
+            type: row['類型'] || row['級別'] || "",
             curr: row['幣別'] || ""
         };
     }
 
-    function loadCSV(file, callback) {
-        Papa.parse(file, {
+    function loadCSV(filename, suffix, callback) {
+        Papa.parse(filename, {
             download: true, header: true, skipEmptyLines: true,
             transformHeader: h => h.trim().replace(/\uFEFF/g, ''),
             complete: res => {
                 if (res.data && res.data.length > 0) {
-                    console.log(`✅ ${file} 讀取成功`);
-                    callback(res);
+                    datasets[suffix] = res.data;
+                    const meta = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
+                    const banks = res.meta.fields.filter(f => f && !meta.includes(f));
+                    allBanks = [...new Set([...allBanks, ...banks])];
+                    refreshDropdowns();
+                    if(callback) callback();
                 }
-            },
-            error: err => console.error(`❌ ${file} 載入失敗`, err)
+            }
         });
-    }
-
-    function collectBanks(fields) {
-        const meta = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
-        const banks = fields.filter(f => f && !meta.includes(f));
-        allBanks = [...new Set([...allBanks, ...banks])];
     }
 
     window.onload = function() {
-        loadCSV("on.csv", res => { dataOn = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('On', dataOn); });
-        loadCSV("off1.csv", res => { dataGsam = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('Gsam', dataGsam); });
-        loadCSV("off2.csv", res => { dataSicav = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('Sicav', dataSicav); });
+        loadCSV("on.csv", "On", () => initPage('On'));
+        loadCSV("off1.csv", "Gsam", () => initPage('Gsam'));
+        loadCSV("off2.csv", "Sicav", () => initPage('Sicav'));
+        loadCSV("off3.csv", "Ninetyone", () => initPage('Ninetyone'));
     };
 
-    function refreshAll() {
+    function refreshDropdowns() {
         const pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
-        ['bankOn', 'bankGsam', 'bankSicav'].forEach(id => {
+        ['bankOn', 'bankGsam', 'bankSicav', 'bankNinetyone'].forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
-            const current = el.value;
+            const cur = el.value;
             el.innerHTML = '<option value="">-- 選擇銷售機構 --</option>';
-            const pList = allBanks.filter(b => pinned.includes(b)).sort();
-            const oList = allBanks.filter(b => !pinned.includes(b)).sort();
-            if(pList.length > 0) {
-                pList.forEach(b => el.add(new Option("📌 " + b, b)));
+            const p = allBanks.filter(b => pinned.includes(b)).sort();
+            const o = allBanks.filter(b => !pinned.includes(b)).sort();
+            if(p.length > 0) {
+                p.forEach(b => el.add(new Option("📌 " + b, b)));
                 el.add(new Option("--------------------", ""));
             }
-            oList.forEach(b => el.add(new Option(b, b)));
-            el.value = current;
+            o.forEach(b => el.add(new Option(b, b)));
+            el.value = cur;
         });
     }
 
-    // --- 核心過濾器邏輯 ---
+    // --- 核心過濾邏輯 ---
     function applyFilters(suffix, row, bank, f) {
         const code = String(row[bank] || "").trim();
         if (code === '' || code === 'X' || code === '●') return false;
-        
-        const { name, type, curr } = getSmartRow(row);
+        const { name, type, curr } = getSmartInfo(row);
 
-        // 1. TISA
         if (suffix === 'On' && f.tisa && !name.includes("TISA")) return false;
 
-        // 2. 費用 (聯集)
+        // 費用 (聯集)
         let feeMatch = true;
         if (f.pre || f.post) {
             feeMatch = false;
@@ -239,11 +254,14 @@
             if (f.post && type.includes("後收")) feeMatch = true;
         }
 
-        // 3. 配息 (聯集)
+        // 配息/累積 (聯集，加晉達專屬交集)
         let payoutMatch = true;
         if (f.acc || f.div) {
             payoutMatch = false;
-            if (suffix === 'Sicav' && f.pre) {
+            if (suffix === 'Ninetyone' && f.pre) {
+                if (f.acc && type === "前收累積") payoutMatch = true;
+                if (f.div && type === "前收配息") payoutMatch = true;
+            } else if (suffix === 'Sicav' && f.pre) {
                 if (f.acc && type === "前收累積") payoutMatch = true;
                 if (f.div && ["前收年配", "前收穩定資本月配息"].includes(type)) payoutMatch = true;
             } else {
@@ -252,11 +270,14 @@
             }
         }
 
-        // 4. 幣別 (聯集)
+        // 幣別 (並存/聯集)
         let currMatch = true;
-        const activeCurrs = (suffix === 'On' ? ['rmb', 'aud', 'zar', 'jpy'] : 
-                            (suffix === 'Gsam' ? ['jpy', 'usd', 'eur', 'eurh', 'usdh', 'audh', 'zarh'] : 
-                            ['usdh', 'jpyh', 'audh'])).filter(k => f[k]);
+        const activeCurrs = (
+            suffix === 'On' ? ['rmb', 'aud', 'zar', 'jpy'] : 
+            suffix === 'Gsam' ? ['jpy', 'usd', 'eur', 'eurh', 'usdh', 'audh', 'zarh'] : 
+            suffix === 'Sicav' ? ['usdh', 'jpyh', 'audh'] :
+            ['usd', 'gbp', 'eur', 'usdh', 'audh', 'zarh']
+        ).filter(k => f[k]);
 
         if (activeCurrs.length > 0) {
             currMatch = false;
@@ -273,26 +294,33 @@
                 if (f.usdh && curr.includes("對沖美元")) currMatch = true;
                 if (f.audh && curr.includes("對沖澳幣")) currMatch = true;
                 if (f.zarh && curr.includes("對沖南非幣")) currMatch = true;
-            } else {
+            } else if (suffix === 'Sicav') {
                 if (f.usdh && curr.includes("美元避險")) currMatch = true;
                 if (f.jpyh && curr.includes("日圓避險")) currMatch = true;
                 if (f.audh && curr.includes("澳幣避險")) currMatch = true;
+            } else if (suffix === 'Ninetyone') {
+                if (f.usd && curr === "美元") currMatch = true;
+                if (f.gbp && curr === "英鎊") currMatch = true;
+                if (f.eur && curr === "歐元") currMatch = true;
+                if (f.usdh && curr.includes("美元避險")) currMatch = true;
+                if (f.audh && curr.includes("澳幣避險")) currMatch = true;
+                if (f.zarh && curr.includes("南非幣避險")) currMatch = true;
             }
         }
         return feeMatch && payoutMatch && currMatch;
     }
 
-    function renderPage(suffix, data) {
+    function initPage(suffix) {
         const bankEl = document.getElementById(`bank${suffix}`);
         const filters = document.querySelectorAll(`.${suffix.toLowerCase()}-filter`);
         
         const update = () => {
             const bank = bankEl.value; if (!bank) return;
             const f = {}; filters.forEach(el => f[el.id.replace(suffix.toLowerCase(),'').toLowerCase()] = el.checked);
-            const filtered = data.filter(row => applyFilters(suffix, row, bank, f));
+            const filtered = datasets[suffix].filter(row => applyFilters(suffix, row, bank, f));
             
             const listDiv = document.getElementById(`list${suffix}`);
-            const names = [...new Set(filtered.map(r => getSmartRow(r).name))].sort();
+            const names = [...new Set(filtered.map(r => getSmartInfo(r).name))].sort();
             listDiv.innerHTML = `<div class="form-check"><input class="form-check-input" type="checkbox" id="${suffix.toLowerCase()}_all" checked><label class="form-check-label fw-bold">全部顯示 (${names.length})</label></div>`;
             names.forEach((n, idx) => {
                 listDiv.innerHTML += `<div class="form-check"><input class="form-check-input chk-${suffix.toLowerCase()}" type="checkbox" value="${n}" id="${suffix.toLowerCase()}_${idx}"><label class="form-check-label" for="${suffix.toLowerCase()}_${idx}">${n}</label></div>`;
@@ -301,12 +329,12 @@
             const allBtn = document.getElementById(`${suffix.toLowerCase()}_all`), items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
             const refreshTable = () => {
                 const checked = Array.from(document.querySelectorAll(`.chk-${suffix.toLowerCase()}:checked`)).map(c => c.value);
-                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getSmartRow(r).name));
+                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getSmartInfo(r).name));
                 document.getElementById(`area${suffix}`).style.display = final.length ? 'block' : 'none';
                 document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
                 const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
                 final.forEach(r => {
-                    const info = getSmartRow(r);
+                    const info = getSmartInfo(r);
                     body.innerHTML += `<tr><td><div class="fund-name">${info.name}</div><div class="fund-sub-info">${info.curr} | ${info.type}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
                 });
             };
@@ -323,7 +351,7 @@
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         el.classList.add('screenshot-mode');
-        const originalWidth = el.style.width;
+        const ow = el.style.width;
         el.style.width = "900px";
 
         if (rows.length <= pageSize) {
@@ -338,11 +366,11 @@
             }
             rows.forEach(r => r.style.display = '');
         }
-        el.style.width = originalWidth;
+        el.style.width = ow;
         el.classList.remove('screenshot-mode');
     }
 
-    function save(uri, n) { const a = document.createElement('a'); a.download = n; a.href = uri; a.click(); }
+    function save(u, n) { const a = document.createElement('a'); a.download = n; a.href = u; a.click(); }
     function togglePinSettings() {
         const area = document.getElementById('pinSettingsArea');
         area.style.display = (area.style.display === 'block') ? 'none' : 'block';
@@ -360,8 +388,10 @@
         const checked = Array.from(document.querySelectorAll('.chk-pin:checked')).map(c => c.value);
         localStorage.setItem('pinnedBanks', JSON.stringify(checked));
         document.getElementById('pinSettingsArea').style.display = 'none';
-        refreshAll();
+        refreshDropdowns();
     }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
