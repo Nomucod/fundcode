@@ -8,18 +8,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary-blue: #1a5f7a; --accent-blue: #eef5f9; --danger-red: #d63031; }
-        body { background-color: #f0f4f7; color: #2c3e50; font-size: 14px; padding-bottom: 40px; font-family: "Microsoft JhengHei", sans-serif; }
+        :root {
+            --primary-blue: #1a5f7a;
+            --accent-blue: #eef5f9;
+            --text-main: #2c3e50;
+            --border-color: #dbe4eb;
+            --danger-red: #d63031;
+        }
+        body { 
+            background-color: #f0f4f7; 
+            color: var(--text-main); 
+            font-size: 14px; 
+            padding-bottom: 40px; 
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
+        }
         .container { max-width: 850px; width: 95%; margin: auto; }
         
-        /* 網頁端響應式字體 */
+        /* 網頁端響應式預覽樣式 */
         .fund-name { font-size: 1rem; font-weight: bold; }
         .fund-sub-info { font-size: 0.85rem; color: #6c757d; margin-top: 3px; }
-        .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.1rem; }
-        @media (max-width: 576px) { .fund-name { font-size: 0.95rem; } .code-highlight { font-size: 1rem; } }
+        .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.15rem; }
+        h6.title-label { font-size: 1.1rem; }
 
-        /* 📸 截圖專用樣式 (強制分離) */
-        .screenshot-mode h6 { font-size: 30px !important; padding: 15px !important; }
+        @media (max-width: 576px) {
+            .fund-name { font-size: 0.95rem; }
+            .code-highlight { font-size: 1rem; }
+        }
+
+        /* 📸 截圖輸出專用樣式 (強制分離) */
+        .screenshot-mode h6.title-label { font-size: 30px !important; padding: 15px !important; }
         .screenshot-mode .fund-name { font-size: 30px !important; line-height: 1.3 !important; }
         .screenshot-mode .fund-sub-info { font-size: 1.8rem !important; line-height: 1.4 !important; }
         .screenshot-mode .code-highlight { font-size: 2.2rem !important; }
@@ -27,17 +44,19 @@
         .screenshot-mode .code-col { width: 220px !important; }
         .screenshot-mode table th { font-size: 20px !important; }
 
+        /* 通用表格設定 */
         .table-custom { width: 100%; border-collapse: collapse; background: white; }
         .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; white-space: nowrap; }
         .table-custom tbody td { padding: 12px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        .code-col { text-align: center; white-space: nowrap; width: 100px; }
-        .nav-tabs .nav-link { font-weight: bold; color: #7f8c8d; border: none; padding: 12px; }
+        .code-col { text-align: center; white-space: nowrap; width: 120px; }
+        
+        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; }
         .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .section-header { background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary-blue); }
-        .list-container { max-height: 200px; overflow-y: auto; border: 1px solid #dbe4eb; padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
+        .section-header { background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary-blue); display: flex; justify-content: space-between; align-items: center; }
+        .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
         .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 15px; }
-        #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .screenshot-footer { font-size: 0.75rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; }
     </style>
 </head>
@@ -75,10 +94,10 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onZAR"><label class="form-check-label">南非幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onJPY"><label class="form-check-label">日幣</label></div></div>
             </div>
-            <div id="listOn" class="list-container">載入資料中...</div>
+            <div id="listOn" class="list-container">載入中...</div>
             <div id="areaOn" style="display:none;">
                 <div id="captureOn" style="background: white; padding: 15px;">
-                    <h6 class="text-center fw-bold mb-2 p-2 rounded" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                    <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
                     <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodyOn"></tbody></table>
                     <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
                 </div>
@@ -102,14 +121,14 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamAUDH"><label class="form-check-label">對沖澳幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamZARH"><label class="form-check-label">對沖南非幣</label></div></div>
             </div>
-            <div id="listGsam" class="list-container">載入資料中...</div>
+            <div id="listGsam" class="list-container">載入中...</div>
             <div id="areaGsam" style="display:none;">
                 <div id="captureGsam" style="background: white; padding: 15px;">
-                    <h6 class="text-center fw-bold mb-2 p-2 rounded" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                    <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
                     <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodyGsam"></tbody></table>
                     <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
                 </div>
-                <button class="btn btn-shot" onclick="handleScreenshot('captureGsam', 'GSAM下單查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+                <button class="btn btn-shot" onclick="handleScreenshot('captureGsam', 'GSAM查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
 
@@ -125,14 +144,14 @@
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavJPYH"><label class="form-check-label">日圓避險</label></div></div>
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavAUDH"><label class="form-check-label">澳幣避險</label></div></div>
             </div>
-            <div id="listSicav" class="list-container">載入資料中...</div>
+            <div id="listSicav" class="list-container">載入中...</div>
             <div id="areaSicav" style="display:none;">
                 <div id="captureSicav" style="background: white; padding: 15px;">
-                    <h6 class="text-center fw-bold mb-2 p-2 rounded" id="titleSicav" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                    <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleSicav" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
                     <table class="table-custom"><thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead><tbody id="bodySicav"></tbody></table>
                     <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
                 </div>
-                <button class="btn btn-shot" onclick="handleScreenshot('captureSicav', 'GSAM_SICAV查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+                <button class="btn btn-shot" onclick="handleScreenshot('captureSicav', 'SICAV查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
     </div>
@@ -141,66 +160,78 @@
 <script>
     let dataOn = [], dataGsam = [], dataSicav = [], allBanks = [];
 
-    // 自動偵測欄位名稱：相容不同的 CSV 標題
-    function getFundField(row, fields) {
-        const name = row['基金名稱'] || row['主要基金'] || "";
-        const type = row['類型'] || row['級別'] || row['配息'] || ""; // 有些級別跟配息合在一起
-        const curr = row['幣別'] || "";
-        return { name, type, curr };
+    // --- 工具函式：相容不同 CSV 標題 ---
+    function getFundInfo(row) {
+        return {
+            name: row['基金名稱'] || row['主要基金'] || "未知基金",
+            type: row['類型'] || row['級別'] || "",
+            curr: row['幣別'] || ""
+        };
     }
 
-    function loadCSV(file, callback) {
-        Papa.parse(file, {
+    // --- CSV 載入模組 (智慧判斷) ---
+    function fetchCSV(filename, targetVar, callback) {
+        Papa.parse(filename, {
             download: true, header: true, skipEmptyLines: true,
             transformHeader: h => h.trim().replace(/\uFEFF/g, ''),
             complete: res => {
-                console.log(`載入 ${file} 成功, 筆數: ${res.data.length}`);
-                callback(res);
+                if (res.data && res.data.length > 0) {
+                    console.log(`✅ ${filename} 載入成功: ${res.data.length} 筆`);
+                    // 使用回推的方式將資料塞入全域變數
+                    if (filename === 'on.csv') dataOn = res.data;
+                    if (filename === 'off1.csv') dataGsam = res.data;
+                    if (filename === 'off2.csv') dataSicav = res.data;
+                    
+                    // 收集銀行欄位
+                    const metaKeys = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
+                    const banks = res.meta.fields.filter(f => f && !metaKeys.includes(f));
+                    allBanks = [...new Set([...allBanks, ...banks])];
+                    
+                    refreshSelects();
+                    if(callback) callback();
+                } else {
+                    console.warn(`⚠️ ${filename} 檔案內容為空或讀取失敗`);
+                }
             },
-            error: err => console.error(`載入 ${file} 失敗:`, err)
+            error: err => alert(`❌ 無法讀取 ${filename}，請確認檔案是否存在於同資料夾中且名稱正確。`)
         });
     }
 
-    function collectBanks(fields) {
-        const meta = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
-        const banks = fields.filter(f => f && !meta.includes(f));
-        allBanks = [...new Set([...allBanks, ...banks])];
-    }
-
     window.onload = function() {
-        loadCSV("on.csv", res => { dataOn = res.data; collectBanks(res.meta.fields); refreshSelects(); renderOn(); });
-        loadCSV("off1.csv", res => { dataGsam = res.data; collectBanks(res.meta.fields); refreshSelects(); renderGsam(); });
-        loadCSV("off2.csv", res => { dataSicav = res.data; collectBanks(res.meta.fields); refreshSelects(); renderSicav(); });
+        fetchCSV("on.csv", dataOn, () => renderPage('On', dataOn));
+        fetchCSV("off1.csv", dataGsam, () => renderPage('Gsam', dataGsam));
+        fetchCSV("off2.csv", dataSicav, () => renderPage('Sicav', dataSicav));
     };
 
     function refreshSelects() {
         const pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
-        ['bankOn', 'bankGsam', 'bankSicav'].forEach(id => populate(document.getElementById(id), allBanks, pinned));
+        ['bankOn', 'bankGsam', 'bankSicav'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const current = el.value;
+            el.innerHTML = '<option value="">-- 選擇銷售機構 --</option>';
+            const pList = allBanks.filter(b => pinned.includes(b)).sort();
+            const oList = allBanks.filter(b => !pinned.includes(b)).sort();
+            if(pList.length > 0) {
+                pList.forEach(b => el.add(new Option("📌 " + b, b)));
+                el.add(new Option("--------------------", ""));
+            }
+            oList.forEach(b => el.add(new Option(b, b)));
+            el.value = current;
+        });
     }
 
-    function populate(el, list, pinned) {
-        if (!el) return;
-        const current = el.value;
-        el.innerHTML = '<option value="">-- 選擇銷售機構 --</option>';
-        const pList = list.filter(b => pinned.includes(b)).sort();
-        const oList = list.filter(b => !pinned.includes(b)).sort();
-        if(pList.length > 0) {
-            pList.forEach(b => el.add(new Option("📌 " + b, b)));
-            el.add(new Option("--------------------", ""));
-        }
-        oList.forEach(b => el.add(new Option(b, b)));
-        el.value = current;
-    }
-
-    // 過濾邏輯核心
+    // --- 篩選邏輯：類別內聯集 (OR)，類別間交集 (AND) ---
     function filterLogic(suffix, row, bank, f) {
         const code = String(row[bank] || "").trim();
         if (code === '' || code === 'X' || code === '●') return false;
         
-        const { name, type, curr } = getFundField(row);
+        const { name, type, curr } = getFundInfo(row);
+
+        // 1. TISA 獨立判斷
         if (suffix === 'On' && f.tisa && !name.includes("TISA")) return false;
 
-        // 1. 費用類別並存
+        // 2. 費用類別 (並存/聯集)
         let feeMatch = true;
         if (f.pre || f.post) {
             feeMatch = false;
@@ -208,20 +239,21 @@
             if (f.post && type.includes("後收")) feeMatch = true;
         }
 
-        // 2. 配息類別並存
-        let payMatch = true;
+        // 3. 配息類別 (並存/聯集)
+        let payoutMatch = true;
         if (f.acc || f.div) {
-            payMatch = false;
+            payoutMatch = false;
             if (suffix === 'Sicav' && f.pre) {
-                if (f.acc && type === "前收累積") payMatch = true;
-                if (f.div && (type === "前收年配" || type === "前收穩定資本月配息")) payMatch = true;
+                // Sicav 前收交集特定邏輯
+                if (f.acc && type === "前收累積") payoutMatch = true;
+                if (f.div && ["前收年配", "前收穩定資本月配息"].includes(type)) payoutMatch = true;
             } else {
-                if (f.acc && type.includes("累積")) payMatch = true;
-                if (f.div && (type.includes("配息") || type.includes("月配") || type.includes("季配") || type.includes("年配"))) payMatch = true;
+                if (f.acc && type.includes("累積")) payoutMatch = true;
+                if (f.div && (type.includes("配息") || type.includes("月配") || type.includes("季配") || type.includes("年配"))) payoutMatch = true;
             }
         }
 
-        // 3. 幣別類別並存
+        // 4. 幣別類別 (並存/聯集)
         let currMatch = true;
         const activeCurrs = (suffix === 'On' ? ['rmb', 'aud', 'zar', 'jpy'] : 
                             (suffix === 'Gsam' ? ['jpy', 'usd', 'eur', 'eurh', 'usdh', 'audh', 'zarh'] : 
@@ -248,18 +280,20 @@
                 if (f.audh && curr.includes("澳幣避險")) currMatch = true;
             }
         }
-        return feeMatch && payMatch && currMatch;
+        return feeMatch && payoutMatch && currMatch;
     }
 
-    // 渲染 UI
-    function createRender(suffix, data) {
-        return function() {
-            const bank = document.getElementById(`bank${suffix}`).value; if (!bank) return;
-            const f = {}; document.querySelectorAll(`.${suffix.toLowerCase()}-filter`).forEach(el => f[el.id.replace(suffix.toLowerCase(),'').toLowerCase()] = el.checked);
+    function renderPage(suffix, data) {
+        const bankEl = document.getElementById(`bank${suffix}`);
+        const filters = document.querySelectorAll(`.${suffix.toLowerCase()}-filter`);
+        
+        const action = () => {
+            const bank = bankEl.value; if (!bank) return;
+            const f = {}; filters.forEach(el => f[el.id.replace(suffix.toLowerCase(),'').toLowerCase()] = el.checked);
             const filtered = data.filter(row => filterLogic(suffix, row, bank, f));
             
             const listDiv = document.getElementById(`list${suffix}`);
-            const names = [...new Set(filtered.map(r => getFundField(r).name))].sort();
+            const names = [...new Set(filtered.map(r => getFundInfo(r).name))].sort();
             listDiv.innerHTML = `<div class="form-check"><input class="form-check-input" type="checkbox" id="${suffix.toLowerCase()}_all" checked><label class="form-check-label fw-bold">全部顯示 (${names.length})</label></div>`;
             names.forEach((n, idx) => {
                 listDiv.innerHTML += `<div class="form-check"><input class="form-check-input chk-${suffix.toLowerCase()}" type="checkbox" value="${n}" id="${suffix.toLowerCase()}_${idx}"><label class="form-check-label" for="${suffix.toLowerCase()}_${idx}">${n}</label></div>`;
@@ -269,12 +303,12 @@
             const items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
             const updateTable = () => {
                 const checked = Array.from(document.querySelectorAll(`.chk-${suffix.toLowerCase()}:checked`)).map(c => c.value);
-                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getFundField(r).name));
+                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getFundInfo(r).name));
                 document.getElementById(`area${suffix}`).style.display = final.length ? 'block' : 'none';
                 document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
                 const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
                 final.forEach(r => {
-                    const info = getFundField(r);
+                    const info = getFundInfo(r);
                     body.innerHTML += `<tr><td><div class="fund-name">${info.name}</div><div class="fund-sub-info">${info.curr} | ${info.type}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
                 });
             };
@@ -282,25 +316,18 @@
             items.forEach(i => i.onclick = () => { if(i.checked) allBtn.checked = false; updateTable(); });
             updateTable();
         };
+
+        bankEl.onchange = action;
+        filters.forEach(el => el.onchange = action);
     }
 
-    const renderOn = createRender('On', dataOn);
-    const renderGsam = createRender('Gsam', dataGsam);
-    const renderSicav = createRender('Sicav', dataSicav);
-
-    document.getElementById('bankOn').onchange = renderOn;
-    document.querySelectorAll('.on-filter').forEach(el => el.onchange = renderOn);
-    document.getElementById('bankGsam').onchange = renderGsam;
-    document.querySelectorAll('.gsam-filter').forEach(el => el.onchange = renderGsam);
-    document.getElementById('bankSicav').onchange = renderSicav;
-    document.querySelectorAll('.sicav-filter').forEach(el => el.onchange = renderSicav);
-
+    // --- 截圖與釘選功能 (樣式分離實作) ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         el.classList.add('screenshot-mode');
         const originalWidth = el.style.width;
-        el.style.width = window.innerWidth <= 576 ? '700px' : '900px';
+        el.style.width = "900px"; // 截圖時強制固定寬度
 
         if (rows.length <= pageSize) {
             const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff" });
@@ -339,6 +366,5 @@
         refreshSelects();
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
