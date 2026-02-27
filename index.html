@@ -24,7 +24,7 @@
         }
         /* 響應式容器 */
         .container { 
-            max-width: 800px; 
+            max-width: 900px; 
             width: 95%;
             margin: auto;
         }
@@ -35,11 +35,9 @@
         
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 手機端優化標題 */
         @media (max-width: 576px) {
             .section-header { font-size: 0.9rem; padding: 8px 10px; }
             .nav-tabs .nav-link { padding: 8px; font-size: 0.9rem; }
-            .form-check-label { font-size: 0.85rem; }
         }
 
         .section-header { 
@@ -57,25 +55,35 @@
         
         .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
         
-        /* 表格優化 */
+        /* 表格設定 */
         .table-custom { width: 100%; border-collapse: collapse; background: white; table-layout: auto; }
-        .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; font-weight: 500; text-align: left; white-space: nowrap; }
-        .table-custom tbody td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        .table-custom thead th { background: var(--primary-blue); color: white; padding: 12px 8px; font-weight: 500; text-align: left; white-space: nowrap; }
+        .table-custom tbody td { padding: 12px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
         
-        /* 基金名稱字體大小: 16px */
-        .table-custom .fund-name { font-size: 16px; font-weight: bold; }
-        
-        /* 幣別 | 類型字體大小: 0.8rem */
-        .fund-sub-info { font-size: 0.8rem; color: #6c757d; margin-top: 3px; line-height: 1.2; }
-        
-        /* 代號欄位 */
-        .code-col { text-align: center; white-space: nowrap; width: 100px; }
-        .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.1rem; }
+        /* --- 依照要求調整文字大小 --- */
+        .fund-name { 
+            font-size: 20px; 
+            font-weight: bold; 
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .fund-sub-info { 
+            font-size: 1.4rem; 
+            color: #6c757d; 
+            line-height: 1.2; 
+        }
+        .code-col { text-align: center; white-space: nowrap; width: 120px; }
+        .code-highlight { 
+            font-weight: bold; 
+            color: var(--danger-red); 
+            font-family: 'Consolas', monospace; 
+            font-size: 1.5rem; 
+        }
         
         .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; }
         
         #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .screenshot-footer { font-size: 0.7rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; line-height: 1.4; }
+        .screenshot-footer { font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; line-height: 1.4; font-style: italic; }
     </style>
 </head>
 <body>
@@ -118,8 +126,8 @@
 
             <div id="listOn" class="list-container">載入中...</div>
             <div id="areaOn" style="display:none;">
-                <div id="captureOn" style="background: white; padding: 15px;">
-                    <h6 class="text-center fw-bold mb-2 p-2 rounded" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                <div id="captureOn" style="background: white; padding: 20px;">
+                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
                     <table class="table-custom">
                         <thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead>
                         <tbody id="bodyOn"></tbody>
@@ -155,8 +163,8 @@
 
             <div id="listGsam" class="list-container">載入中...</div>
             <div id="areaGsam" style="display:none;">
-                <div id="captureGsam" style="background: white; padding: 15px;">
-                    <h6 class="text-center fw-bold mb-2 p-2 rounded" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                <div id="captureGsam" style="background: white; padding: 20px;">
+                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
                     <table class="table-custom">
                         <thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead>
                         <tbody id="bodyGsam"></tbody>
@@ -165,7 +173,7 @@
                         下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號
                     </div>
                 </div>
-                <button class="btn btn-shot mt-3" onclick="handleScreenshot('captureGsam', 'GSAM', 10)">📸 拍照截圖 (10筆/頁)</button>
+                <button class="btn btn-shot mt-3" onclick="handleScreenshot('captureGsam', 'GSAM下單查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
     </div>
@@ -317,6 +325,7 @@
             document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
             const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
             final.forEach(r => {
+                // 套用新的文字類別
                 body.innerHTML += `<tr><td><div class="fund-name">${r['基金名稱']}</div><div class="fund-sub-info">${r['幣別']} | ${r['類型']}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
             });
         };
@@ -325,15 +334,17 @@
         updateTable();
     }
 
-    // --- 截圖邏輯 ---
+    // --- 截圖邏輯優化 ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         
+        // 暫時擴大寬度以適應大字體
         const originalWidth = el.style.width;
         const originalMaxWidth = el.style.maxWidth;
-        const isMobile = window.innerWidth <= 576;
-        el.style.width = isMobile ? '500px' : '700px'; 
+        
+        // 字體變大，設定截圖寬度為 850px 以防擠壓
+        el.style.width = '850px'; 
         el.style.maxWidth = 'none';
 
         if (rows.length <= pageSize) {
@@ -355,7 +366,6 @@
 
     function save(uri, n) { const a = document.createElement('a'); a.download = n; a.href = uri; a.click(); }
     
-    // 釘選功能
     function togglePinSettings() {
         const area = document.getElementById('pinSettingsArea');
         area.style.display = (area.style.display === 'block') ? 'none' : 'block';
