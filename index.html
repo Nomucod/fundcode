@@ -24,7 +24,7 @@
         }
         .container { max-width: 850px; width: 95%; margin: auto; }
         
-        /* 網頁端響應式預覽樣式 */
+        /* 網頁端響應式字體設定 */
         .fund-name { font-size: 1rem; font-weight: bold; }
         .fund-sub-info { font-size: 0.85rem; color: #6c757d; margin-top: 3px; }
         .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.15rem; }
@@ -35,7 +35,7 @@
             .code-highlight { font-size: 1rem; }
         }
 
-        /* 📸 截圖輸出專用樣式 (強制分離) */
+        /* 📸 截圖專用樣式 (當 class 包含 screenshot-mode 時) */
         .screenshot-mode h6.title-label { font-size: 30px !important; padding: 15px !important; }
         .screenshot-mode .fund-name { font-size: 30px !important; line-height: 1.3 !important; }
         .screenshot-mode .fund-sub-info { font-size: 1.8rem !important; line-height: 1.4 !important; }
@@ -50,7 +50,7 @@
         .table-custom tbody td { padding: 12px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
         .code-col { text-align: center; white-space: nowrap; width: 120px; }
         
-        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; }
+        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; cursor: pointer; }
         .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .section-header { background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary-blue); display: flex; justify-content: space-between; align-items: center; }
@@ -73,15 +73,21 @@
         <div id="pinCheckboxes" class="list-container" style="max-height: 250px;"></div>
     </div>
 
-    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#on-pane">境內基金</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#gsam-pane">GSAM</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sicav-pane">GSAM(SICAV)</button></li>
+    <ul class="nav nav-tabs nav-fill" id="queryTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="on-tab" data-bs-toggle="tab" data-bs-target="#on-pane" type="button" role="tab">境內基金</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="gsam-tab" data-bs-toggle="tab" data-bs-target="#gsam-pane" type="button" role="tab">GSAM</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sicav-tab" data-bs-toggle="tab" data-bs-target="#sicav-pane" type="button" role="tab">GSAM(SICAV)</button>
+        </li>
     </ul>
 
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="on-pane">
-            <div class="section-header"><span>境內基金查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
+    <div class="tab-content" id="queryTabContent">
+        <div class="tab-pane fade show active" id="on-pane" role="tabpanel" aria-labelledby="on-tab">
+            <div class="section-header"><span>境內基金下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
             <select id="bankOn" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onTISA"><label class="form-check-label">TISA</label></div></div>
@@ -94,7 +100,7 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onZAR"><label class="form-check-label">南非幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onJPY"><label class="form-check-label">日幣</label></div></div>
             </div>
-            <div id="listOn" class="list-container">載入中...</div>
+            <div id="listOn" class="list-container">載入資料中...</div>
             <div id="areaOn" style="display:none;">
                 <div id="captureOn" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
@@ -105,8 +111,8 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="gsam-pane">
-            <div class="section-header"><span>GSAM查詢系統</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
+        <div class="tab-pane fade" id="gsam-pane" role="tabpanel" aria-labelledby="gsam-tab">
+            <div class="section-header"><span>GSAM下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
             <select id="bankGsam" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamPre"><label class="form-check-label">前收</label></div></div>
@@ -121,7 +127,7 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamAUDH"><label class="form-check-label">對沖澳幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamZARH"><label class="form-check-label">對沖南非幣</label></div></div>
             </div>
-            <div id="listGsam" class="list-container">載入中...</div>
+            <div id="listGsam" class="list-container">載入資料中...</div>
             <div id="areaGsam" style="display:none;">
                 <div id="captureGsam" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
@@ -132,8 +138,8 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="sicav-pane">
-            <div class="section-header"><span>GSAM(SICAV)查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
+        <div class="tab-pane fade" id="sicav-pane" role="tabpanel" aria-labelledby="sicav-tab">
+            <div class="section-header"><span>GSAM(SICAV)下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選設定</button></div>
             <select id="bankSicav" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3">
                 <div class="col-3"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavPre"><label class="form-check-label">前收</label></div></div>
@@ -144,7 +150,7 @@
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavJPYH"><label class="form-check-label">日圓避險</label></div></div>
                 <div class="col-4"><div class="form-check"><input class="form-check-input sicav-filter" type="checkbox" id="sicavAUDH"><label class="form-check-label">澳幣避險</label></div></div>
             </div>
-            <div id="listSicav" class="list-container">載入中...</div>
+            <div id="listSicav" class="list-container">載入資料中...</div>
             <div id="areaSicav" style="display:none;">
                 <div id="captureSicav" style="background: white; padding: 15px;">
                     <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleSicav" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
@@ -157,53 +163,47 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     let dataOn = [], dataGsam = [], dataSicav = [], allBanks = [];
 
-    // --- 工具函式：相容不同 CSV 標題 ---
-    function getFundInfo(row) {
+    // --- 智慧標籤偵測：自動處理不同的 CSV 標頭 ---
+    function getSmartRow(row) {
         return {
             name: row['基金名稱'] || row['主要基金'] || "未知基金",
-            type: row['類型'] || row['級別'] || "",
+            type: row['類型'] || row['級別'] || row['配息'] || "",
             curr: row['幣別'] || ""
         };
     }
 
-    // --- CSV 載入模組 (智慧判斷) ---
-    function fetchCSV(filename, targetVar, callback) {
-        Papa.parse(filename, {
+    function loadCSV(file, callback) {
+        Papa.parse(file, {
             download: true, header: true, skipEmptyLines: true,
             transformHeader: h => h.trim().replace(/\uFEFF/g, ''),
             complete: res => {
                 if (res.data && res.data.length > 0) {
-                    console.log(`✅ ${filename} 載入成功: ${res.data.length} 筆`);
-                    // 使用回推的方式將資料塞入全域變數
-                    if (filename === 'on.csv') dataOn = res.data;
-                    if (filename === 'off1.csv') dataGsam = res.data;
-                    if (filename === 'off2.csv') dataSicav = res.data;
-                    
-                    // 收集銀行欄位
-                    const metaKeys = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
-                    const banks = res.meta.fields.filter(f => f && !metaKeys.includes(f));
-                    allBanks = [...new Set([...allBanks, ...banks])];
-                    
-                    refreshSelects();
-                    if(callback) callback();
-                } else {
-                    console.warn(`⚠️ ${filename} 檔案內容為空或讀取失敗`);
+                    console.log(`✅ ${file} 讀取成功`);
+                    callback(res);
                 }
             },
-            error: err => alert(`❌ 無法讀取 ${filename}，請確認檔案是否存在於同資料夾中且名稱正確。`)
+            error: err => console.error(`❌ ${file} 載入失敗`, err)
         });
     }
 
+    function collectBanks(fields) {
+        const meta = ['基金名稱', '主要基金', '類型', '級別', '幣別', '配息'];
+        const banks = fields.filter(f => f && !meta.includes(f));
+        allBanks = [...new Set([...allBanks, ...banks])];
+    }
+
     window.onload = function() {
-        fetchCSV("on.csv", dataOn, () => renderPage('On', dataOn));
-        fetchCSV("off1.csv", dataGsam, () => renderPage('Gsam', dataGsam));
-        fetchCSV("off2.csv", dataSicav, () => renderPage('Sicav', dataSicav));
+        loadCSV("on.csv", res => { dataOn = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('On', dataOn); });
+        loadCSV("off1.csv", res => { dataGsam = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('Gsam', dataGsam); });
+        loadCSV("off2.csv", res => { dataSicav = res.data; collectBanks(res.meta.fields); refreshAll(); renderPage('Sicav', dataSicav); });
     };
 
-    function refreshSelects() {
+    function refreshAll() {
         const pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
         ['bankOn', 'bankGsam', 'bankSicav'].forEach(id => {
             const el = document.getElementById(id);
@@ -221,17 +221,17 @@
         });
     }
 
-    // --- 篩選邏輯：類別內聯集 (OR)，類別間交集 (AND) ---
-    function filterLogic(suffix, row, bank, f) {
+    // --- 核心過濾器邏輯 ---
+    function applyFilters(suffix, row, bank, f) {
         const code = String(row[bank] || "").trim();
         if (code === '' || code === 'X' || code === '●') return false;
         
-        const { name, type, curr } = getFundInfo(row);
+        const { name, type, curr } = getSmartRow(row);
 
-        // 1. TISA 獨立判斷
+        // 1. TISA
         if (suffix === 'On' && f.tisa && !name.includes("TISA")) return false;
 
-        // 2. 費用類別 (並存/聯集)
+        // 2. 費用 (聯集)
         let feeMatch = true;
         if (f.pre || f.post) {
             feeMatch = false;
@@ -239,12 +239,11 @@
             if (f.post && type.includes("後收")) feeMatch = true;
         }
 
-        // 3. 配息類別 (並存/聯集)
+        // 3. 配息 (聯集)
         let payoutMatch = true;
         if (f.acc || f.div) {
             payoutMatch = false;
             if (suffix === 'Sicav' && f.pre) {
-                // Sicav 前收交集特定邏輯
                 if (f.acc && type === "前收累積") payoutMatch = true;
                 if (f.div && ["前收年配", "前收穩定資本月配息"].includes(type)) payoutMatch = true;
             } else {
@@ -253,7 +252,7 @@
             }
         }
 
-        // 4. 幣別類別 (並存/聯集)
+        // 4. 幣別 (聯集)
         let currMatch = true;
         const activeCurrs = (suffix === 'On' ? ['rmb', 'aud', 'zar', 'jpy'] : 
                             (suffix === 'Gsam' ? ['jpy', 'usd', 'eur', 'eurh', 'usdh', 'audh', 'zarh'] : 
@@ -267,7 +266,7 @@
                 if (f.zar && curr.includes("南非幣")) currMatch = true;
                 if (f.jpy && curr.includes("日幣")) currMatch = true;
             } else if (suffix === 'Gsam') {
-                if (f.jpy && curr.includes("日圓")) currMatch = true;
+                if (f.jpy && (curr.includes("日圓") || curr.includes("日幣"))) currMatch = true;
                 if (f.usd && curr.includes("美元")) currMatch = true;
                 if (f.eur && curr.includes("歐元")) currMatch = true;
                 if (f.eurh && curr.includes("對沖歐元")) currMatch = true;
@@ -287,47 +286,45 @@
         const bankEl = document.getElementById(`bank${suffix}`);
         const filters = document.querySelectorAll(`.${suffix.toLowerCase()}-filter`);
         
-        const action = () => {
+        const update = () => {
             const bank = bankEl.value; if (!bank) return;
             const f = {}; filters.forEach(el => f[el.id.replace(suffix.toLowerCase(),'').toLowerCase()] = el.checked);
-            const filtered = data.filter(row => filterLogic(suffix, row, bank, f));
+            const filtered = data.filter(row => applyFilters(suffix, row, bank, f));
             
             const listDiv = document.getElementById(`list${suffix}`);
-            const names = [...new Set(filtered.map(r => getFundInfo(r).name))].sort();
+            const names = [...new Set(filtered.map(r => getSmartRow(r).name))].sort();
             listDiv.innerHTML = `<div class="form-check"><input class="form-check-input" type="checkbox" id="${suffix.toLowerCase()}_all" checked><label class="form-check-label fw-bold">全部顯示 (${names.length})</label></div>`;
             names.forEach((n, idx) => {
                 listDiv.innerHTML += `<div class="form-check"><input class="form-check-input chk-${suffix.toLowerCase()}" type="checkbox" value="${n}" id="${suffix.toLowerCase()}_${idx}"><label class="form-check-label" for="${suffix.toLowerCase()}_${idx}">${n}</label></div>`;
             });
 
-            const allBtn = document.getElementById(`${suffix.toLowerCase()}_all`);
-            const items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
-            const updateTable = () => {
+            const allBtn = document.getElementById(`${suffix.toLowerCase()}_all`), items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
+            const refreshTable = () => {
                 const checked = Array.from(document.querySelectorAll(`.chk-${suffix.toLowerCase()}:checked`)).map(c => c.value);
-                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getFundInfo(r).name));
+                let final = (allBtn.checked || checked.length === 0) ? filtered : filtered.filter(r => checked.includes(getSmartRow(r).name));
                 document.getElementById(`area${suffix}`).style.display = final.length ? 'block' : 'none';
                 document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
                 const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
                 final.forEach(r => {
-                    const info = getFundInfo(r);
+                    const info = getSmartRow(r);
                     body.innerHTML += `<tr><td><div class="fund-name">${info.name}</div><div class="fund-sub-info">${info.curr} | ${info.type}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
                 });
             };
-            allBtn.onclick = () => { if(allBtn.checked) items.forEach(i => i.checked = false); updateTable(); };
-            items.forEach(i => i.onclick = () => { if(i.checked) allBtn.checked = false; updateTable(); });
-            updateTable();
+            allBtn.onclick = () => { if(allBtn.checked) items.forEach(i => i.checked = false); refreshTable(); };
+            items.forEach(i => i.onclick = () => { if(i.checked) allBtn.checked = false; refreshTable(); });
+            refreshTable();
         };
 
-        bankEl.onchange = action;
-        filters.forEach(el => el.onchange = action);
+        bankEl.onchange = update;
+        filters.forEach(el => el.onchange = update);
     }
 
-    // --- 截圖與釘選功能 (樣式分離實作) ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         el.classList.add('screenshot-mode');
         const originalWidth = el.style.width;
-        el.style.width = "900px"; // 截圖時強制固定寬度
+        el.style.width = "900px";
 
         if (rows.length <= pageSize) {
             const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff" });
@@ -363,7 +360,7 @@
         const checked = Array.from(document.querySelectorAll('.chk-pin:checked')).map(c => c.value);
         localStorage.setItem('pinnedBanks', JSON.stringify(checked));
         document.getElementById('pinSettingsArea').style.display = 'none';
-        refreshSelects();
+        refreshAll();
     }
 </script>
 </body>
