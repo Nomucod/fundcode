@@ -15,60 +15,54 @@
             --border-color: #dbe4eb;
             --danger-red: #d63031;
         }
-        /* --- 網頁原始設定：隨設備調整 --- */
+        
+        /* 1. 網頁原始設定 (響應式) */
         body { 
             background-color: #f0f4f7; 
             color: var(--text-main); 
-            font-size: 14px; /* 基準字體 */
+            font-size: 14px; 
             padding-bottom: 40px; 
             font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
         }
         .container { max-width: 800px; width: 95%; margin: auto; }
-        .nav-tabs .nav-link { font-weight: bold; padding: 12px; }
-        .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; }
+        .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; }
+        .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        /* 表格通用樣式 */
-        .table-custom { width: 100%; border-collapse: collapse; background: white; table-layout: auto; }
-        .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; white-space: nowrap; }
+        /* 網頁版表格基本樣式 */
+        .table-custom { width: 100%; border-collapse: collapse; background: white; }
+        .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; font-weight: 500; }
         .table-custom tbody td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        
-        /* 網頁顯示時的文字大小 */
-        .fund-name-text { font-size: 1rem; font-weight: bold; }
-        .fund-sub-info { font-size: 0.8rem; color: #6c757d; margin-top: 3px; }
+        .fund-name-text { font-weight: bold; }
+        .fund-sub-info { font-size: 0.75rem; color: #6c757d; margin-top: 3px; }
         .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.1rem; }
-        .code-col { text-align: center; white-space: nowrap; width: 100px; }
+        .code-col { text-align: center; white-space: nowrap; width: 120px; }
 
-        /* -------------------------------------------------- */
-        /* 📸 截圖專用模式 (僅在按下截圖時暫時觸發) 📸 */
-        /* -------------------------------------------------- */
-        .screenshot-mode .fund-name-text { 
-            font-size: 30px !important; /* 基金名稱設定為 30px */
-        }
-        .screenshot-mode .fund-sub-info { 
-            font-size: 1.4rem !important; /* 幣別 | 類型設定為 1.4rem */
-            color: #444 !important;
-        }
-        .screenshot-mode .code-highlight { 
-            font-size: 2rem !important; /* 下單代號設定為 2rem */
-        }
-        .screenshot-mode .screenshot-footer {
-            font-size: 1.1rem !important; /* 註腳也稍微加大 */
-        }
-        .screenshot-mode .table-custom thead th {
-            font-size: 1.2rem !important;
-        }
-        /* -------------------------------------------------- */
+        /* 2. 📸 截圖專用字體樣式 (當 class 包含 is-capturing 時觸發) */
+        .is-capturing .fund-name-text { font-size: 26px !important; }
+        .is-capturing .fund-sub-info { font-size: 1.2rem !important; line-height: 1.4 !important; }
+        .is-capturing .code-highlight { font-size: 2rem !important; }
+        .is-capturing h6 { font-size: 26px !important; padding: 15px !important; }
+        .is-capturing .screenshot-footer { font-size: 1rem !important; }
+        .is-capturing .table-custom thead th { font-size: 1.2rem !important; }
 
+        /* 介面輔助樣式 */
         .section-header { 
-            background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; 
-            padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary-blue);
+            background: var(--accent-blue); color: var(--primary-blue); font-weight: bold; padding: 10px 15px; 
+            border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary-blue);
             display: flex; justify-content: space-between; align-items: center;
         }
         .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
-        .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 15px;}
-        #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .screenshot-footer { font-size: 0.75rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; }
+        .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; }
+        #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .screenshot-footer { font-size: 0.7rem; color: #666; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; line-height: 1.4; }
+
+        /* 手機網頁排版微調 */
+        @media (max-width: 576px) {
+            .nav-tabs .nav-link { padding: 8px; font-size: 0.9rem; }
+            .section-header { font-size: 0.85rem; }
+            .form-check-label { font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -85,8 +79,8 @@
     </div>
 
     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#on-pane">境內基金</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#gsam-pane">GSAM下單查詢</button></li>
+        <li class="nav-item"><button class="nav-link active" id="on-tab" data-bs-toggle="tab" data-bs-target="#on-pane">境內基金</button></li>
+        <li class="nav-item"><button class="nav-link" id="gsam-tab" data-bs-toggle="tab" data-bs-target="#gsam-pane">GSAM下單查詢</button></li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
@@ -96,6 +90,7 @@
                 <button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button>
             </div>
             <select id="bankOn" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
+            
             <div class="row g-1 mb-3 px-1">
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onTISA"><label class="form-check-label">TISA</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onPre"><label class="form-check-label">前收</label></div></div>
@@ -107,6 +102,7 @@
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onZAR"><label class="form-check-label">南非幣</label></div></div>
                 <div class="col-3"><div class="form-check"><input class="form-check-input on-filter" type="checkbox" id="onJPY"><label class="form-check-label">日幣</label></div></div>
             </div>
+
             <div id="listOn" class="list-container">載入中...</div>
             <div id="areaOn" style="display:none;">
                 <div id="captureOn" style="background: white; padding: 15px;">
@@ -122,10 +118,7 @@
         </div>
 
         <div class="tab-pane fade" id="gsam-pane">
-            <div class="section-header">
-                <span>GSAM查詢</span>
-                <button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button>
-            </div>
+            <div class="section-header"><span>GSAM下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
             <select id="bankGsam" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
             <div class="row g-1 mb-3 px-1">
                 <div class="col-3"><div class="form-check"><input class="form-check-input gsam-filter" type="checkbox" id="gsamPre"><label class="form-check-label">前收</label></div></div>
@@ -150,15 +143,17 @@
                     </table>
                     <div class="screenshot-footer">下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號</div>
                 </div>
-                <button class="btn btn-shot" onclick="handleScreenshot('captureGsam', 'GSAM查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+                <button class="btn btn-shot" onclick="handleScreenshot('captureGsam', 'GSAM', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let dataOn = [], dataGsam = [], allBanks = [];
 
+    // --- 初始化與 CSV 載入 ---
     function loadCSV(file, callback) {
         Papa.parse(file, {
             download: true, header: true, skipEmptyLines: true,
@@ -186,8 +181,7 @@
     };
 
     function setupMutualExclusion(id1, id2, renderFunc) {
-        const cb1 = document.getElementById(id1);
-        const cb2 = document.getElementById(id2);
+        const cb1 = document.getElementById(id1), cb2 = document.getElementById(id2);
         if(!cb1 || !cb2) return;
         cb1.addEventListener('change', () => { if(cb1.checked) cb2.checked = false; renderFunc(); });
         cb2.addEventListener('change', () => { if(cb2.checked) cb1.checked = false; renderFunc(); });
@@ -203,8 +197,7 @@
         if (!el) return;
         const current = el.value;
         el.innerHTML = '<option value="">-- 選擇銷售機構 --</option>';
-        const pList = list.filter(b => pinned.includes(b)).sort();
-        const oList = list.filter(b => !pinned.includes(b)).sort();
+        const pList = list.filter(b => pinned.includes(b)).sort(), oList = list.filter(b => !pinned.includes(b)).sort();
         if(pList.length > 0) {
             pList.forEach(b => el.add(new Option("📌 " + b, b)));
             el.add(new Option("--------------------", ""));
@@ -213,17 +206,14 @@
         el.value = current;
     }
 
-    // --- 境內渲染 ---
+    // --- 渲染與篩選邏輯 ---
     document.getElementById('bankOn').onchange = renderOn;
-    document.querySelectorAll('.on-filter').forEach(el => {
-        if(el.id !== 'onPre' && el.id !== 'onPost') el.onchange = renderOn;
-    });
+    document.querySelectorAll('.on-filter').forEach(el => { if(el.id !== 'onPre' && el.id !== 'onPost') el.onchange = renderOn; });
     function renderOn() {
         const bank = document.getElementById('bankOn').value; if (!bank) return;
         const f = {}; document.querySelectorAll('.on-filter').forEach(el => f[el.id.replace('on','').toLowerCase()] = el.checked);
         let filtered = dataOn.filter(row => {
-            const code = String(row[bank] || "").trim();
-            if (code === '' || code === 'X' || code === '●') return false;
+            const code = String(row[bank] || "").trim(); if (code === '' || code === 'X' || code === '●') return false;
             const type = row['類型'] || "", curr = row['幣別'] || "", name = row['基金名稱'] || "";
             if (f.tisa && !name.includes("TISA")) return false;
             if (f.pre) {
@@ -238,26 +228,20 @@
                 if (f.acc && !type.includes("累積")) return false;
                 if (f.div && !["月配", "季配", "半年配"].some(s => type.includes(s))) return false;
             }
-            if (f.rmb && !curr.includes("人民幣")) return false;
-            if (f.aud && !curr.includes("澳幣")) return false;
-            if (f.zar && !curr.includes("南非幣")) return false;
-            if (f.jpy && !curr.includes("日幣")) return false;
+            if (f.rmb && !curr.includes("人民幣")) return false; if (f.aud && !curr.includes("澳幣")) return false;
+            if (f.zar && !curr.includes("南非幣")) return false; if (f.jpy && !curr.includes("日幣")) return false;
             return true;
         });
         updateUI('On', filtered, bank);
     }
 
-    // --- GSAM 渲染 ---
     document.getElementById('bankGsam').onchange = renderGsam;
-    document.querySelectorAll('.gsam-filter').forEach(el => {
-        if(el.id !== 'gsamPre' && el.id !== 'gsamPost') el.onchange = renderGsam;
-    });
+    document.querySelectorAll('.gsam-filter').forEach(el => { if(el.id !== 'gsamPre' && el.id !== 'gsamPost') el.onchange = renderGsam; });
     function renderGsam() {
         const bank = document.getElementById('bankGsam').value; if (!bank) return;
         const f = {}; document.querySelectorAll('.gsam-filter').forEach(el => f[el.id.replace('gsam','').toLowerCase()] = el.checked);
         let filtered = dataGsam.filter(row => {
-            const code = String(row[bank] || "").trim();
-            if (code === '' || code === 'X' || code === '●') return false;
+            const code = String(row[bank] || "").trim(); if (code === '' || code === 'X' || code === '●') return false;
             const type = row['類型'] || "", curr = row['幣別'] || "";
             if (f.pre) {
                 if (!["前收累積", "前收月配", "前收年配"].includes(type)) return false;
@@ -271,12 +255,9 @@
                 if (f.acc && !type.includes("累積")) return false;
                 if (f.div && !["月配", "年配"].some(s => type.includes(s))) return false;
             }
-            if (f.jpy && !curr.includes("日圓")) return false;
-            if (f.usd && !curr.includes("美元")) return false;
-            if (f.eur && !curr.includes("歐元")) return false;
-            if (f.eurh && !curr.includes("對沖歐元")) return false;
-            if (f.usdh && !curr.includes("對沖美元")) return false;
-            if (f.audh && !curr.includes("對沖澳幣")) return false;
+            if (f.jpy && !curr.includes("日圓")) return false; if (f.usd && !curr.includes("美元")) return false;
+            if (f.eur && !curr.includes("歐元")) return false; if (f.eurh && !curr.includes("對沖歐元")) return false;
+            if (f.usdh && !curr.includes("對沖美元")) return false; if (f.audh && !curr.includes("對沖澳幣")) return false;
             if (f.zarh && !curr.includes("對沖南非幣")) return false;
             return true;
         });
@@ -284,14 +265,10 @@
     }
 
     function updateUI(suffix, data, bank) {
-        const listDiv = document.getElementById(`list${suffix}`);
-        const names = [...new Set(data.map(r => r['基金名稱']))].sort();
+        const listDiv = document.getElementById(`list${suffix}`), names = [...new Set(data.map(r => r['基金名稱']))].sort();
         listDiv.innerHTML = `<div class="form-check"><input class="form-check-input" type="checkbox" id="${suffix.toLowerCase()}_all" checked><label class="form-check-label fw-bold">全部顯示 (${names.length})</label></div>`;
-        names.forEach((n, idx) => {
-            listDiv.innerHTML += `<div class="form-check"><input class="form-check-input chk-${suffix.toLowerCase()}" type="checkbox" value="${n}" id="${suffix.toLowerCase()}_${idx}"><label class="form-check-label" for="${suffix.toLowerCase()}_${idx}">${n}</label></div>`;
-        });
-        const all = document.getElementById(`${suffix.toLowerCase()}_all`);
-        const items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
+        names.forEach((n, idx) => { listDiv.innerHTML += `<div class="form-check"><input class="form-check-input chk-${suffix.toLowerCase()}" type="checkbox" value="${n}" id="${suffix.toLowerCase()}_${idx}"><label class="form-check-label" for="${suffix.toLowerCase()}_${idx}">${n}</label></div>`; });
+        const all = document.getElementById(`${suffix.toLowerCase()}_all`), items = document.querySelectorAll(`.chk-${suffix.toLowerCase()}`);
         const updateTable = () => {
             const checked = Array.from(document.querySelectorAll(`.chk-${suffix.toLowerCase()}:checked`)).map(c => c.value);
             let final = (all.checked || checked.length === 0) ? data : data.filter(r => checked.includes(r['基金名稱']));
@@ -307,17 +284,16 @@
         updateTable();
     }
 
-    // --- 📸 截圖優化邏輯 ---
+    // --- 📸 核心截圖邏輯 (含字體切換) ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         
-        // 1. 進入「截圖模式」：文字變大、寬度固定
-        el.classList.add('screenshot-mode');
-        const originalWidth = el.style.width;
-        const originalMaxWidth = el.style.maxWidth;
-        const isMobile = window.innerWidth <= 576;
-        el.style.width = isMobile ? '600px' : '850px'; // 截圖時給予足夠寬度防止斷行
+        // 進入截圖模式：添加 class 並強制寬度
+        el.classList.add('is-capturing');
+        const originalWidth = el.style.width, originalMaxWidth = el.style.maxWidth;
+        // 因字體放大，截圖寬度增加至 800px 確保不擠壓
+        el.style.width = '850px'; 
         el.style.maxWidth = 'none';
 
         if (rows.length <= pageSize) {
@@ -333,20 +309,17 @@
             rows.forEach(r => r.style.display = '');
         }
         
-        // 2. 恢復「網頁顯示模式」：文字縮小、還原寬度
-        el.classList.remove('screenshot-mode');
-        el.style.width = originalWidth;
-        el.style.maxWidth = originalMaxWidth;
+        // 恢復網頁模式
+        el.classList.remove('is-capturing');
+        el.style.width = originalWidth; el.style.maxWidth = originalMaxWidth;
     }
 
     function save(uri, n) { const a = document.createElement('a'); a.download = n; a.href = uri; a.click(); }
-    
     function togglePinSettings() {
         const area = document.getElementById('pinSettingsArea');
         area.style.display = (area.style.display === 'block') ? 'none' : 'block';
         if(area.style.display === 'block') {
-            const container = document.getElementById('pinCheckboxes');
-            const pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
+            const container = document.getElementById('pinCheckboxes'), pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
             container.innerHTML = "";
             allBanks.sort().forEach(b => {
                 container.innerHTML += `<div class="form-check"><input class="form-check-input chk-pin" type="checkbox" value="${b}" id="pin_${b}" ${pinned.includes(b)?'checked':''}>
@@ -357,8 +330,7 @@
     function savePins() {
         const checked = Array.from(document.querySelectorAll('.chk-pin:checked')).map(c => c.value);
         localStorage.setItem('pinnedBanks', JSON.stringify(checked));
-        document.getElementById('pinSettingsArea').style.display = 'none';
-        refreshSelects();
+        document.getElementById('pinSettingsArea').style.display = 'none'; refreshSelects();
     }
 </script>
 </body>
