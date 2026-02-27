@@ -57,16 +57,21 @@
         
         .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
         
-        /* 表格優化：防止手機端代號斷行 */
+        /* 表格優化 */
         .table-custom { width: 100%; border-collapse: collapse; background: white; table-layout: auto; }
         .table-custom thead th { background: var(--primary-blue); color: white; padding: 10px 8px; font-weight: 500; text-align: left; white-space: nowrap; }
         .table-custom tbody td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
         
-        /* 代號欄位絕對不允許斷行 */
+        /* 基金名稱字體大小: 16px */
+        .table-custom .fund-name { font-size: 16px; font-weight: bold; }
+        
+        /* 幣別 | 類型字體大小: 0.8rem */
+        .fund-sub-info { font-size: 0.8rem; color: #6c757d; margin-top: 3px; line-height: 1.2; }
+        
+        /* 代號欄位 */
         .code-col { text-align: center; white-space: nowrap; width: 100px; }
         .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.1rem; }
         
-        .fund-sub-info { font-size: 0.75rem; color: #6c757d; margin-top: 3px; line-height: 1.2; }
         .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; }
         
         #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -160,7 +165,7 @@
                         下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號
                     </div>
                 </div>
-                <button class="btn btn-shot mt-3" handleScreenshot('captureGsam', 'GSAM下單查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+                <button class="btn btn-shot mt-3" onclick="handleScreenshot('captureGsam', 'GSAM', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
     </div>
@@ -312,7 +317,7 @@
             document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
             const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
             final.forEach(r => {
-                body.innerHTML += `<tr><td><div class="fw-bold">${r['基金名稱']}</div><div class="fund-sub-info">${r['幣別']} | ${r['類型']}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
+                body.innerHTML += `<tr><td><div class="fund-name">${r['基金名稱']}</div><div class="fund-sub-info">${r['幣別']} | ${r['類型']}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
             });
         };
         all.onclick = () => { if(all.checked) items.forEach(i => i.checked = false); updateTable(); };
@@ -320,16 +325,13 @@
         updateTable();
     }
 
-    // --- 截圖優化邏輯 ---
+    // --- 截圖邏輯 ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
         
-        // 截圖前暫時鎖定寬度，防止手機版代號斷行
         const originalWidth = el.style.width;
         const originalMaxWidth = el.style.maxWidth;
-        
-        // 根據設備決定截圖基礎寬度
         const isMobile = window.innerWidth <= 576;
         el.style.width = isMobile ? '500px' : '700px'; 
         el.style.maxWidth = 'none';
@@ -347,7 +349,6 @@
             rows.forEach(r => r.style.display = '');
         }
         
-        // 還原樣式
         el.style.width = originalWidth;
         el.style.maxWidth = originalMaxWidth;
     }
