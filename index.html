@@ -22,24 +22,19 @@
             padding-bottom: 40px; 
             font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
         }
-        /* 響應式容器 */
         .container { 
-            max-width: 900px; 
+            max-width: 800px; 
             width: 95%;
             margin: auto;
         }
         
+        /* 頁籤樣式 */
         .nav-tabs { border-bottom: 3px solid var(--primary-blue); background: white; }
         .nav-tabs .nav-link { border: none; color: #7f8c8d; font-weight: bold; padding: 12px; font-size: 1rem; }
         .nav-tabs .nav-link.active { background: var(--primary-blue) !important; color: white !important; border-radius: 8px 8px 0 0; }
-        
         .tab-content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        
-        @media (max-width: 576px) {
-            .section-header { font-size: 0.9rem; padding: 8px 10px; }
-            .nav-tabs .nav-link { padding: 8px; font-size: 0.9rem; }
-        }
 
+        /* 區塊標題 */
         .section-header { 
             background: var(--accent-blue); 
             color: var(--primary-blue); 
@@ -54,36 +49,31 @@
         }
         
         .list-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 15px; }
-        
-        /* 表格設定 */
+
+        /* --- 截圖表格文字大小設定 --- */
         .table-custom { width: 100%; border-collapse: collapse; background: white; table-layout: auto; }
-        .table-custom thead th { background: var(--primary-blue); color: white; padding: 12px 8px; font-weight: 500; text-align: left; white-space: nowrap; }
+        .table-custom thead th { background: var(--primary-blue); color: white; padding: 12px 8px; font-weight: 500; text-align: left; font-size: 1.1rem; }
         .table-custom tbody td { padding: 12px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
         
-        /* --- 依照要求調整文字大小 --- */
-        .fund-name { 
-            font-size: 20px; 
-            font-weight: bold; 
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-        .fund-sub-info { 
-            font-size: 1.4rem; 
-            color: #6c757d; 
-            line-height: 1.2; 
-        }
-        .code-col { text-align: center; white-space: nowrap; width: 120px; }
-        .code-highlight { 
-            font-weight: bold; 
-            color: var(--danger-red); 
-            font-family: 'Consolas', monospace; 
-            font-size: 1.5rem; 
-        }
+        /* 1. 基金名稱設定為 20px */
+        .fund-name-text { font-size: 20px; font-weight: bold; display: block; margin-bottom: 4px; }
+        
+        /* 2. 幣別 | 類型設定為 1.4rem */
+        .fund-sub-info { font-size: 1.4rem; color: #555; line-height: 1.4; }
+        
+        /* 3. 下單代號設定為 1.5rem */
+        .code-col { text-align: center; white-space: nowrap; width: 130px; } /* 加寬以容納大字體 */
+        .code-highlight { font-weight: bold; color: var(--danger-red); font-family: 'Consolas', monospace; font-size: 1.5rem; }
         
         .btn-shot { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; }
         
         #pinSettingsArea { display: none; background: #fff; border: 2px solid var(--primary-blue); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .screenshot-footer { font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; line-height: 1.4; font-style: italic; }
+        .screenshot-footer { font-size: 0.9rem; color: #444; border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px; line-height: 1.5; font-weight: 500; }
+        
+        @media (max-width: 576px) {
+            .section-header { font-size: 0.9rem; }
+            .nav-tabs .nav-link { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -126,14 +116,14 @@
 
             <div id="listOn" class="list-container">載入中...</div>
             <div id="areaOn" style="display:none;">
-                <div id="captureOn" style="background: white; padding: 20px;">
-                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                <div id="captureOn" style="background: white; padding: 20px; border: 1px solid #eee;">
+                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleOn" style="color: var(--primary-blue); background: var(--accent-blue); font-size: 1.2rem;"></h6>
                     <table class="table-custom">
                         <thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead>
                         <tbody id="bodyOn"></tbody>
                     </table>
                     <div class="screenshot-footer">
-                        下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號
+                        下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金，但是無下單代號
                     </div>
                 </div>
                 <button class="btn btn-shot mt-3" onclick="handleScreenshot('captureOn', '境內基金', 10)">📸 拍照截圖 (10筆/頁)</button>
@@ -163,14 +153,14 @@
 
             <div id="listGsam" class="list-container">載入中...</div>
             <div id="areaGsam" style="display:none;">
-                <div id="captureGsam" style="background: white; padding: 20px;">
-                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                <div id="captureGsam" style="background: white; padding: 20px; border: 1px solid #eee;">
+                    <h6 class="text-center fw-bold mb-3 p-2 rounded" id="titleGsam" style="color: var(--primary-blue); background: var(--accent-blue); font-size: 1.2rem;"></h6>
                     <table class="table-custom">
                         <thead><tr><th>基金明細 (幣別 | 類型)</th><th class="code-col">代號</th></tr></thead>
                         <tbody id="bodyGsam"></tbody>
                     </table>
                     <div class="screenshot-footer">
-                        下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金,但是無下單代號
+                        下單代號有◎的符號即表示為「目前不接受新申購」，V即表示為「已上架」基金，但是無下單代號
                     </div>
                 </div>
                 <button class="btn btn-shot mt-3" onclick="handleScreenshot('captureGsam', 'GSAM下單查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
@@ -239,11 +229,10 @@
         el.value = current;
     }
 
-    // --- 境內渲染 ---
+    // --- 渲染邏輯 ---
     document.getElementById('bankOn').onchange = renderOn;
-    document.querySelectorAll('.on-filter').forEach(el => {
-        if(el.id !== 'onPre' && el.id !== 'onPost') el.onchange = renderOn;
-    });
+    document.querySelectorAll('.on-filter').forEach(el => { if(el.id !== 'onPre' && el.id !== 'onPost') el.onchange = renderOn; });
+    
     function renderOn() {
         const bank = document.getElementById('bankOn').value; if (!bank) return;
         const f = {}; document.querySelectorAll('.on-filter').forEach(el => f[el.id.replace('on','').toLowerCase()] = el.checked);
@@ -273,11 +262,9 @@
         updateUI('On', filtered, bank);
     }
 
-    // --- GSAM 渲染 ---
     document.getElementById('bankGsam').onchange = renderGsam;
-    document.querySelectorAll('.gsam-filter').forEach(el => {
-        if(el.id !== 'gsamPre' && el.id !== 'gsamPost') el.onchange = renderGsam;
-    });
+    document.querySelectorAll('.gsam-filter').forEach(el => { if(el.id !== 'gsamPre' && el.id !== 'gsamPost') el.onchange = renderGsam; });
+    
     function renderGsam() {
         const bank = document.getElementById('bankGsam').value; if (!bank) return;
         const f = {}; document.querySelectorAll('.gsam-filter').forEach(el => f[el.id.replace('gsam','').toLowerCase()] = el.checked);
@@ -325,8 +312,7 @@
             document.getElementById(`title${suffix}`).innerText = bank + " 銷售代碼";
             const body = document.getElementById(`body${suffix}`); body.innerHTML = '';
             final.forEach(r => {
-                // 套用新的文字類別
-                body.innerHTML += `<tr><td><div class="fund-name">${r['基金名稱']}</div><div class="fund-sub-info">${r['幣別']} | ${r['類型']}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
+                body.innerHTML += `<tr><td><span class="fund-name-text">${r['基金名稱']}</span><div class="fund-sub-info">${r['幣別']} | ${r['類型']}</div></td><td class="code-col code-highlight">${r[bank]}</td></tr>`;
             });
         };
         all.onclick = () => { if(all.checked) items.forEach(i => i.checked = false); updateTable(); };
@@ -334,38 +320,32 @@
         updateTable();
     }
 
-    // --- 截圖邏輯優化 ---
+    // --- 截圖邏輯 ---
     async function handleScreenshot(elId, name, pageSize) {
         const el = document.getElementById(elId);
         const rows = Array.from(el.querySelectorAll('tbody tr'));
-        
-        // 暫時擴大寬度以適應大字體
         const originalWidth = el.style.width;
-        const originalMaxWidth = el.style.maxWidth;
         
-        // 字體變大，設定截圖寬度為 850px 以防擠壓
-        el.style.width = '850px'; 
+        // 為了確保大字體不跑版，截圖時模擬寬度增加至 750px
+        el.style.width = '750px'; 
         el.style.maxWidth = 'none';
 
         if (rows.length <= pageSize) {
-            const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+            const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff" });
             save(canvas.toDataURL(), `${name}.png`);
         } else {
-            alert(`共 ${rows.length} 筆，系統將分 ${Math.ceil(rows.length/pageSize)} 頁截圖。`);
+            alert(`共 ${rows.length} 筆，將分 ${Math.ceil(rows.length/pageSize)} 頁截圖。`);
             for (let i = 0; i < rows.length; i += pageSize) {
                 rows.forEach((r, idx) => r.style.display = (idx >= i && idx < i + pageSize) ? '' : 'none');
-                const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+                const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff" });
                 save(canvas.toDataURL(), `${name}_P${Math.floor(i/pageSize)+1}.png`);
             }
             rows.forEach(r => r.style.display = '');
         }
-        
         el.style.width = originalWidth;
-        el.style.maxWidth = originalMaxWidth;
     }
 
     function save(uri, n) { const a = document.createElement('a'); a.download = n; a.href = uri; a.click(); }
-    
     function togglePinSettings() {
         const area = document.getElementById('pinSettingsArea');
         area.style.display = (area.style.display === 'block') ? 'none' : 'block';
