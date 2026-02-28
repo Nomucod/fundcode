@@ -35,7 +35,7 @@
             .code-highlight { font-size: 1.05rem; }
         }
 
-        /* 📸 截圖專用巨大化樣式 (強制分離樣式) */
+        /* 📸 截圖專用巨大化樣式 */
         .screenshot-mode h6.title-label { font-size: 30px !important; padding: 15px !important; }
         .screenshot-mode .fund-name { font-size: 30px !important; line-height: 1.3 !important; }
         .screenshot-mode .fund-sub-info { font-size: 1.8rem !important; line-height: 1.4 !important; }
@@ -74,10 +74,11 @@
     </div>
 
     <ul class="nav nav-tabs nav-fill" id="queryTab" role="tablist">
-        <li class="nav-item"><button class="nav-link active" id="on-tab" data-bs-toggle="tab" data-bs-target="#on-pane" type="button">境內基金</button></li>
-        <li class="nav-item"><button class="nav-link" id="gsam-tab" data-bs-toggle="tab" data-bs-target="#gsam-pane" type="button">GSAM</button></li>
-        <li class="nav-item"><button class="nav-link" id="sicav-tab" data-bs-toggle="tab" data-bs-target="#sicav-pane" type="button">GSAM(SICAV)</button></li>
-        <li class="nav-item"><button class="nav-link" id="ninetyone-tab" data-bs-toggle="tab" data-bs-target="#ninetyone-pane" type="button">晉達</button></li>
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#on-pane" type="button">境內基金</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#gsam-pane" type="button">GSAM</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sicav-pane" type="button">GSAM(SICAV)</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ninetyone-pane" type="button">晉達</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ireland-pane" type="button">愛爾蘭</button></li>
     </ul>
 
     <div class="tab-content" id="queryTabContent">
@@ -180,14 +181,40 @@
                 <button class="btn btn-shot" onclick="handleScreenshot('captureNinetyone', '晉達查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
             </div>
         </div>
+
+        <div class="tab-pane fade" id="ireland-pane" role="tabpanel">
+            <div class="section-header"><span>愛爾蘭下單查詢</span><button class="btn btn-sm btn-outline-primary" onclick="togglePinSettings()">⚙️ 釘選</button></div>
+            <select id="bankIreland" class="form-select mb-3"><option value="">-- 選擇銷售機構 --</option></select>
+            <div class="row g-1 mb-3">
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandPre"><label class="form-check-label">前收</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandPost"><label class="form-check-label">後收</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandAcc"><label class="form-check-label">累積</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandDiv"><label class="form-check-label">配息</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandJPY"><label class="form-check-label">日圓</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandJPYH"><label class="form-check-label">日圓避險</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandZARH"><label class="form-check-label">南非幣避險</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandUSD"><label class="form-check-label">美元</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandUSDH"><label class="form-check-label">美元避險</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandAUD"><label class="form-check-label">澳幣</label></div></div>
+                <div class="col-3"><div class="form-check"><input class="form-check-input ireland-filter" type="checkbox" id="irelandAUDH"><label class="form-check-label">澳幣避險</label></div></div>
+            </div>
+            <div id="listIreland" class="list-container">載入中...</div>
+            <div id="areaIreland" style="display:none;">
+                <div id="captureIreland" style="background: white; padding: 15px;">
+                    <h6 class="text-center fw-bold mb-2 p-2 rounded title-label" id="titleIreland" style="color: var(--primary-blue); background: var(--accent-blue);"></h6>
+                    <table class="table-custom"><thead><tr><th>基金明細</th><th class="code-col">代號</th></tr></thead><tbody id="bodyIreland"></tbody></table>
+                    <div class="screenshot-footer">下單代號有◎即表示為「目前不接受新申購」，V即表示為「已上架」基金但無代號</div>
+                </div>
+                <button class="btn btn-shot" onclick="handleScreenshot('captureIreland', '愛爾蘭查詢', 10)">📸 拍照截圖 (10筆/頁)</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    let datasets = { On: [], Gsam: [], Sicav: [], Ninetyone: [] };
+    let datasets = { On: [], Gsam: [], Sicav: [], Ninetyone: [], Ireland: [] };
     let allBanks = [];
 
-    // --- 工具：智慧標籤偵測 ---
     function getSmartInfo(row) {
         return {
             name: row['基金名稱'] || row['主要基金'] || "未知基金",
@@ -218,11 +245,12 @@
         loadCSV("off1.csv", "Gsam", () => initPage('Gsam'));
         loadCSV("off2.csv", "Sicav", () => initPage('Sicav'));
         loadCSV("off3.csv", "Ninetyone", () => initPage('Ninetyone'));
+        loadCSV("off4.csv", "Ireland", () => initPage('Ireland'));
     };
 
     function refreshDropdowns() {
         const pinned = JSON.parse(localStorage.getItem('pinnedBanks') || "[]");
-        ['bankOn', 'bankGsam', 'bankSicav', 'bankNinetyone'].forEach(id => {
+        ['bankOn', 'bankGsam', 'bankSicav', 'bankNinetyone', 'bankIreland'].forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
             const cur = el.value;
@@ -238,7 +266,6 @@
         });
     }
 
-    // --- 核心過濾邏輯 ---
     function applyFilters(suffix, row, bank, f) {
         const code = String(row[bank] || "").trim();
         if (code === '' || code === 'X' || code === '●') return false;
@@ -254,19 +281,27 @@
             if (f.post && type.includes("後收")) feeMatch = true;
         }
 
-        // 配息/累積 (聯集，加晉達專屬交集)
+        // 配息/累積 (交集邏輯)
         let payoutMatch = true;
         if (f.acc || f.div) {
             payoutMatch = false;
-            if (suffix === 'Ninetyone' && f.pre) {
-                if (f.acc && type === "前收累積") payoutMatch = true;
-                if (f.div && type === "前收配息") payoutMatch = true;
+            if (suffix === 'Ireland' || suffix === 'Ninetyone') {
+                if (f.pre) {
+                    if (f.acc && type.includes("前收累積")) payoutMatch = true;
+                    if (f.div && type.includes("前收配息")) payoutMatch = true;
+                } else if (f.post) {
+                    if (f.acc && type.includes("後收累積")) payoutMatch = true;
+                    if (f.div && type.includes("後收月配")) payoutMatch = true;
+                } else {
+                    if (f.acc && type.includes("累積")) payoutMatch = true;
+                    if (f.div && (type.includes("配息") || type.includes("月配"))) payoutMatch = true;
+                }
             } else if (suffix === 'Sicav' && f.pre) {
                 if (f.acc && type === "前收累積") payoutMatch = true;
                 if (f.div && ["前收年配", "前收穩定資本月配息"].includes(type)) payoutMatch = true;
             } else {
                 if (f.acc && type.includes("累積")) payoutMatch = true;
-                if (f.div && (type.includes("配息") || type.includes("月配") || type.includes("季配") || type.includes("年配"))) payoutMatch = true;
+                if (f.div && (type.includes("配息") || type.includes("月配") || type.includes("季配") || type.includes("年配") || type.includes("半年配"))) payoutMatch = true;
             }
         }
 
@@ -276,6 +311,7 @@
             suffix === 'On' ? ['rmb', 'aud', 'zar', 'jpy'] : 
             suffix === 'Gsam' ? ['jpy', 'usd', 'eur', 'eurh', 'usdh', 'audh', 'zarh'] : 
             suffix === 'Sicav' ? ['usdh', 'jpyh', 'audh'] :
+            suffix === 'Ireland' ? ['jpy', 'jpyh', 'zarh', 'usd', 'usdh', 'aud', 'audh'] :
             ['usd', 'gbp', 'eur', 'usdh', 'audh', 'zarh']
         ).filter(k => f[k]);
 
@@ -287,7 +323,7 @@
                 if (f.zar && curr.includes("南非幣")) currMatch = true;
                 if (f.jpy && curr.includes("日幣")) currMatch = true;
             } else if (suffix === 'Gsam') {
-                if (f.jpy && (curr.includes("日圓") || curr.includes("日幣"))) currMatch = true;
+                if (f.jpy && curr.includes("日圓")) currMatch = true;
                 if (f.usd && curr.includes("美元")) currMatch = true;
                 if (f.eur && curr.includes("歐元")) currMatch = true;
                 if (f.eurh && curr.includes("對沖歐元")) currMatch = true;
@@ -297,6 +333,14 @@
             } else if (suffix === 'Sicav') {
                 if (f.usdh && curr.includes("美元避險")) currMatch = true;
                 if (f.jpyh && curr.includes("日圓避險")) currMatch = true;
+                if (f.audh && curr.includes("澳幣避險")) currMatch = true;
+            } else if (suffix === 'Ireland') {
+                if (f.jpy && curr === "日圓") currMatch = true;
+                if (f.jpyh && curr.includes("日圓避險")) currMatch = true;
+                if (f.zarh && curr.includes("南非幣避險")) currMatch = true;
+                if (f.usd && curr === "美元") currMatch = true;
+                if (f.usdh && curr.includes("美元避險")) currMatch = true;
+                if (f.aud && curr === "澳幣") currMatch = true;
                 if (f.audh && curr.includes("澳幣避險")) currMatch = true;
             } else if (suffix === 'Ninetyone') {
                 if (f.usd && curr === "美元") currMatch = true;
